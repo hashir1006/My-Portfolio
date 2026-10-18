@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../data/portfolio_data.dart';
 import '../theme/app_theme.dart';
+import '../widgets/glass_box.dart';
 import '../widgets/glass_button.dart';
 import '../widgets/section_heading.dart';
 
@@ -229,89 +230,65 @@ class _ContactSectionState extends State<ContactSection> {
     required String value,
     required VoidCallback? onTap,
   }) {
-    return InkWell(
+    return GlassBox(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: isDark ? AppColors.surfaceDark : Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isDark ? AppColors.borderDark : AppColors.borderLight,
+      borderRadius: 16,
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              color: AppColors.goldPrimary.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: AppColors.goldPrimary.withValues(alpha: 0.4),
+              ),
+            ),
+            child: Icon(icon, color: AppColors.goldPrimary, size: 20),
           ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 42,
-              height: 42,
-              decoration: BoxDecoration(
-                color: AppColors.goldPrimary.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: AppColors.goldPrimary.withValues(alpha: 0.35),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppTypography.labelSpaced(
+                    context: context,
+                    fontSize: 11,
+                    letterSpacing: 1.5,
+                    color: isDark ? AppColors.mutedTextDark : AppColors.mutedTextLight,
+                  ),
                 ),
-              ),
-              child: Icon(icon, color: AppColors.goldPrimary, size: 20),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: AppTypography.labelSpaced(
-                      context: context,
-                      fontSize: 11,
-                      letterSpacing: 1.5,
-                      color: isDark ? AppColors.mutedTextDark : AppColors.mutedTextLight,
-                    ),
+                const SizedBox(height: 3),
+                Text(
+                  value,
+                  style: AppTypography.bodySans(
+                    context: context,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? AppColors.textDark : AppColors.textLight,
                   ),
-                  const SizedBox(height: 3),
-                  Text(
-                    value,
-                    style: AppTypography.bodySans(
-                      context: context,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: isDark ? AppColors.textDark : AppColors.textLight,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            if (onTap != null)
-              const Icon(
-                Icons.arrow_forward_rounded,
-                size: 16,
-                color: AppColors.goldPrimary,
-              ),
-          ],
-        ),
+          ),
+          if (onTap != null)
+            const Icon(
+              Icons.arrow_forward_rounded,
+              size: 16,
+              color: AppColors.goldPrimary,
+            ),
+        ],
       ),
     );
   }
 
   Widget _buildContactForm(BuildContext context, bool isDark) {
-    return Container(
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: isDark ? AppColors.borderDark : AppColors.borderLight,
-          width: 1.2,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: (isDark ? Colors.black : const Color(0xFF8A7758))
-                .withValues(alpha: 0.08),
-            blurRadius: 24,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
+    return GlassBox(
+      borderRadius: 24,
       padding: const EdgeInsets.all(32),
       child: Form(
         key: _formKey,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data/portfolio_data.dart';
 import '../theme/app_theme.dart';
+import '../widgets/glass_box.dart';
 import '../widgets/section_heading.dart';
 
 class AboutSection extends StatelessWidget {
@@ -16,7 +17,7 @@ class AboutSection extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.symmetric(
         horizontal: isDesktop ? 36 : 24,
-        vertical: 72,
+        vertical: 64,
       ),
       child: Center(
         child: ConstrainedBox(
@@ -24,32 +25,17 @@ class AboutSection extends StatelessWidget {
           child: Column(
             children: [
               // Section Heading
-              SectionHeading(
+              const SectionHeading(
                 kicker: 'ABOUT ME',
                 title: PortfolioData.aboutHeading,
                 subtitle: PortfolioData.aboutSubheading,
               ),
-              const SizedBox(height: 52),
+              const SizedBox(height: 44),
 
-              // Main Bio Card with Parchment Surface & Decorative Borders
-              Container(
-                decoration: BoxDecoration(
-                  color: isDark ? AppColors.surfaceDark : Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: isDark ? AppColors.borderDark : AppColors.borderLight,
-                    width: 1.2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: (isDark ? Colors.black : const Color(0xFF8A7758))
-                          .withValues(alpha: 0.08),
-                      blurRadius: 24,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.all(isDesktop ? 48 : 28),
+              // Main Bio Card in Glass Box
+              GlassBox(
+                borderRadius: 24,
+                padding: EdgeInsets.all(isDesktop ? 44 : 26),
                 child: Column(
                   children: [
                     // Bio Paragraphs
@@ -68,7 +54,7 @@ class AboutSection extends StatelessWidget {
                         ),
                       );
                     }),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
 
                     // Divider with subtle gold accent
                     Container(
@@ -78,13 +64,13 @@ class AboutSection extends StatelessWidget {
                         gradient: LinearGradient(
                           colors: [
                             Colors.transparent,
-                            AppColors.goldPrimary.withValues(alpha: 0.4),
+                            AppColors.goldPrimary.withValues(alpha: 0.5),
                             Colors.transparent,
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 36),
+                    const SizedBox(height: 32),
 
                     // Compact Verified Stats Row
                     isDesktop
@@ -97,7 +83,7 @@ class AboutSection extends StatelessWidget {
                         : Column(
                             children: PortfolioData.stats.map((stat) {
                               return Padding(
-                                padding: const EdgeInsets.only(bottom: 20),
+                                padding: const EdgeInsets.only(bottom: 16),
                                 child: _buildStatCard(context, stat, isDark),
                               );
                             }).toList(),
@@ -117,16 +103,9 @@ class AboutSection extends StatelessWidget {
     Map<String, String> stat,
     bool isDark,
   ) {
-    return Container(
-      constraints: const BoxConstraints(minWidth: 220),
+    return GlassBox(
+      borderRadius: 16,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDarkElevated : AppColors.surfaceLightAlt,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDark ? AppColors.borderDark : AppColors.borderLight,
-        ),
-      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -134,7 +113,7 @@ class AboutSection extends StatelessWidget {
             stat['value']!,
             style: AppTypography.headingSerif(
               context: context,
-              fontSize: 42,
+              fontSize: 38,
               fontWeight: FontWeight.w700,
               color: AppColors.goldPrimary,
             ),

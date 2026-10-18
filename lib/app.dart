@@ -81,6 +81,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
       {'id': 'experience', 'key': _experienceKey},
       {'id': 'skills', 'key': _skillsKey},
       {'id': 'projects', 'key': _projectsKey},
+      {'id': 'education', 'key': _educationKey},
       {'id': 'about', 'key': _aboutKey},
       {'id': 'home', 'key': _homeKey},
     ];
@@ -157,9 +158,57 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgImagePath = isDark ? 'assets/images/bg_dark.png' : 'assets/images/bg_light.png';
+
     return Scaffold(
       body: Stack(
         children: [
+          // 0. Fixed Background Image with Smooth Theme Cross-Fade Transition
+          Positioned.fill(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 700),
+              switchInCurve: Curves.easeInOutCubic,
+              switchOutCurve: Curves.easeInOutCubic,
+              child: Image.asset(
+                bgImagePath,
+                key: ValueKey(bgImagePath),
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+                alignment: Alignment.center,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: isDark ? AppColors.bgDark : AppColors.bgLight,
+                ),
+              ),
+            ),
+          ),
+
+          // 0.1 Atmospheric Translucent Tint & Vignette for Readability & Depth
+          Positioned.fill(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 700),
+              curve: Curves.easeInOutCubic,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: isDark
+                      ? [
+                          const Color(0xFF0F1014).withValues(alpha: 0.88),
+                          const Color(0xFF13151A).withValues(alpha: 0.74),
+                          const Color(0xFF0C0D11).withValues(alpha: 0.90),
+                        ]
+                      : [
+                          const Color(0xFFF7F2E8).withValues(alpha: 0.84),
+                          const Color(0xFFFAF6EE).withValues(alpha: 0.70),
+                          const Color(0xFFF4EDE2).withValues(alpha: 0.86),
+                        ],
+                ),
+              ),
+            ),
+          ),
+
           // 1. Normal vertical scrollable content
           SingleChildScrollView(
             controller: _scrollController,
@@ -190,7 +239,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                   child: const EducationSection(),
                 ),
 
-                // Technical Skills Section
+                // Technical Skills Section (Compact 5-column Glass Box layout)
                 Container(
                   key: _skillsKey,
                   child: const SkillsSection(),

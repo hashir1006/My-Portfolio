@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data/experience_data.dart';
 import '../theme/app_theme.dart';
+import '../widgets/glass_box.dart';
 import '../widgets/section_heading.dart';
 
 class ExperienceSection extends StatelessWidget {
@@ -41,24 +42,9 @@ class ExperienceSection extends StatelessWidget {
                 separatorBuilder: (context, index) => const SizedBox(height: 24),
                 itemBuilder: (context, index) {
                   final item = experiences[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: isDark ? AppColors.surfaceDark : Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: isDark ? AppColors.borderDark : AppColors.borderLight,
-                        width: 1.2,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: (isDark ? Colors.black : const Color(0xFF8A7758))
-                              .withValues(alpha: 0.06),
-                          blurRadius: 18,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    padding: EdgeInsets.all(isDesktop ? 36 : 24),
+                  return GlassBox(
+                    borderRadius: 20,
+                    padding: EdgeInsets.all(isDesktop ? 36 : 22),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

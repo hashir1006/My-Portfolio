@@ -56,24 +56,29 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
             constraints: const BoxConstraints(maxWidth: 1180),
             height: 60,
             decoration: BoxDecoration(
-              color: AppColors.navCapsuleLight.withValues(alpha: 0.94),
+              color: AppColors.navCapsuleLight.withValues(alpha: 0.90),
               borderRadius: BorderRadius.circular(36),
               border: Border.all(
-                color: AppColors.goldMuted.withValues(alpha: 0.35),
-                width: 1.0,
+                color: AppColors.goldMuted.withValues(alpha: 0.45),
+                width: 1.1,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.28),
-                  blurRadius: 24,
+                  color: Colors.black.withValues(alpha: 0.32),
+                  blurRadius: 28,
                   offset: const Offset(0, 8),
+                ),
+                BoxShadow(
+                  color: AppColors.goldPrimary.withValues(alpha: 0.15),
+                  blurRadius: 16,
+                  spreadRadius: 1,
                 ),
               ],
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(36),
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(

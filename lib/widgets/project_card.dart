@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../data/projects_data.dart';
@@ -30,10 +31,12 @@ class _ProjectCardState extends State<ProjectCard> {
       context: context,
       builder: (ctx) {
         return AlertDialog(
-          backgroundColor: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
+          backgroundColor: isDark
+              ? const Color(0xFF1B1D26).withValues(alpha: 0.95)
+              : Colors.white.withValues(alpha: 0.95),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(color: AppColors.goldMuted.withValues(alpha: 0.5)),
+            borderRadius: BorderRadius.circular(22),
+            side: BorderSide(color: AppColors.goldPrimary.withValues(alpha: 0.6), width: 1.2),
           ),
           title: Row(
             children: [
@@ -103,8 +106,8 @@ class _ProjectCardState extends State<ProjectCard> {
                       color: isDark ? AppColors.textDark : AppColors.textLight,
                     ),
                     backgroundColor: isDark
-                        ? AppColors.surfaceDarkElevated
-                        : AppColors.surfaceLightAlt,
+                        ? const Color(0xFF262933).withValues(alpha: 0.8)
+                        : Colors.white.withValues(alpha: 0.8),
                     side: BorderSide(
                       color: isDark ? AppColors.borderDark : AppColors.borderLight,
                     ),
@@ -152,26 +155,25 @@ class _ProjectCardState extends State<ProjectCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 220),
         curve: Curves.easeOutCubic,
-        transform: Matrix4.translationValues(0, _isHovered ? -6 : 0, 0),
+        transform: Matrix4.translationValues(0, _isHovered ? -5 : 0, 0),
         decoration: BoxDecoration(
-          color: isDark ? AppColors.surfaceDark : Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: _isHovered
                 ? AppColors.goldPrimary
-                : (isDark ? AppColors.borderDark : AppColors.borderLight),
-            width: _isHovered ? 1.4 : 1.0,
+                : AppColors.goldMuted.withValues(alpha: isDark ? 0.35 : 0.4),
+            width: _isHovered ? 1.4 : 1.1,
           ),
           boxShadow: [
             BoxShadow(
               color: (isDark ? Colors.black : const Color(0xFF907D5D))
-                  .withValues(alpha: _isHovered ? 0.18 : 0.06),
+                  .withValues(alpha: _isHovered ? 0.24 : 0.08),
               blurRadius: _isHovered ? 24 : 12,
-              offset: Offset(0, _isHovered ? 10 : 4),
+              offset: Offset(0, _isHovered ? 8 : 4),
             ),
             if (_isHovered)
               BoxShadow(
-                color: AppColors.goldPrimary.withValues(alpha: 0.15),
+                color: AppColors.goldPrimary.withValues(alpha: 0.20),
                 blurRadius: 18,
                 spreadRadius: 1,
               ),
@@ -179,9 +181,15 @@ class _ProjectCardState extends State<ProjectCard> {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+            child: Container(
+              color: isDark
+                  ? const Color(0xFF161820).withValues(alpha: _isHovered ? 0.82 : 0.70)
+                  : Colors.white.withValues(alpha: _isHovered ? 0.85 : 0.72),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
               // Visual header banner / thumbnail placeholder
               Container(
                 height: 140,
@@ -415,6 +423,8 @@ class _ProjectCardState extends State<ProjectCard> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  ),
+);
+}
 }

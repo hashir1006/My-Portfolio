@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data/portfolio_data.dart';
 import '../theme/app_theme.dart';
+import '../widgets/glass_box.dart';
 import '../widgets/section_heading.dart';
 
 class EducationSection extends StatelessWidget {
@@ -31,24 +32,9 @@ class EducationSection extends StatelessWidget {
               const SizedBox(height: 48),
 
               // Education Timeline / Card
-              Container(
-                decoration: BoxDecoration(
-                  color: isDark ? AppColors.surfaceDark : Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: isDark ? AppColors.borderDark : AppColors.borderLight,
-                    width: 1.2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: (isDark ? Colors.black : const Color(0xFF8A7758))
-                          .withValues(alpha: 0.08),
-                      blurRadius: 20,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.all(isDesktop ? 40 : 24),
+              GlassBox(
+                borderRadius: 24,
+                padding: EdgeInsets.all(isDesktop ? 38 : 22),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
