@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Hashir Shaikh — Computer Science & AI/ML Student at M. H. Saboo Siddik College of Engineering, Mumbai. Building impactful web and mobile applications with AI technologies.">
+  <meta name="author" content="Hashir Shaikh">
+  <meta name="keywords" content="Hashir Shaikh, Portfolio, Flutter Web, AI ML, Computer Science, Mumbai, Hackathons, Software Developer">
+  <meta name="theme-color" content="#B88946">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Hashir Shaikh | AI/ML & Software Developer">
+  <meta property="og:description" content="Personal portfolio of Hashir Shaikh. Persian-inspired design, Flutter Web, interactive projects, and achievements.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Hashir Shaikh">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Hashir Shaikh | Computer Science & AI/ML Portfolio</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Preconnect Google Fonts for immediate crisp rendering -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #F7F2E8;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    #loading-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #F7F2E8;
+      z-index: 99999;
+      transition: opacity 0.5s ease-out;
+    }
+    .monogram-badge {
+      width: 64px;
+      height: 64px;
+      border: 2px solid #B88946;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #B88946;
+      background: rgba(184, 137, 70, 0.08);
+      box-shadow: 0 0 24px rgba(184, 137, 70, 0.2);
+      margin-bottom: 24px;
+      animation: pulse 2s infinite ease-in-out;
+    }
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid rgba(184, 137, 70, 0.2);
+      border-top-color: #B88946;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin-bottom: 16px;
+    }
+    .loading-text {
+      color: #6E6A63;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading-container">
+    <div class="monogram-badge">H</div>
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Hashir Shaikh</div>
+  </div>
+
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      const loader = document.getElementById('loading-container');
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 500);
+      }
+    });
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
