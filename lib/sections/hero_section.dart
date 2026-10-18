@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../data/portfolio_data.dart';
 import '../theme/app_theme.dart';
+import '../widgets/glass_box.dart';
 import '../widgets/glass_button.dart';
 import '../widgets/image_placeholder.dart';
 import '../widgets/persian_decorations.dart';
@@ -244,185 +245,254 @@ class _HeroSectionState extends State<HeroSection>
 
   Widget _buildLeftHeroContent(BuildContext context, {bool centerOnMobile = false}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final size = MediaQuery.of(context).size;
+    final isDesktop = size.width >= 960;
 
-    return Column(
-      crossAxisAlignment:
-          centerOnMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // 1. Small Decorative Label: "✦ BISMILLAH ────────"
-        PersianStarOrnament(
-          text: PortfolioData.bismillah,
-          color: AppColors.goldPrimary,
-          showDivider: true,
-        ),
-        const SizedBox(height: 18),
-
-        // 2. Greeting: "Assalamualaikum, I'm"
-        Text(
-          PortfolioData.greeting,
-          style: AppTypography.headingSerif(
-            context: context,
-            fontSize: 26,
-            fontWeight: FontWeight.w400,
-            color: isDark ? AppColors.textDark : AppColors.textLight,
+    return GlassBox(
+      borderRadius: 28,
+      blur: 24,
+      enableHover: false,
+      padding: EdgeInsets.symmetric(
+        horizontal: isDesktop ? 36 : 24,
+        vertical: isDesktop ? 36 : 26,
+      ),
+      child: Column(
+        crossAxisAlignment:
+            centerOnMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // 1. Small Decorative Label: "✦ BISMILLAH ────────"
+          PersianStarOrnament(
+            text: PortfolioData.bismillah,
+            color: AppColors.goldPrimary,
+            showDivider: true,
           ),
-        ),
-        const SizedBox(height: 2),
+          const SizedBox(height: 18),
 
-        // 3. Main Heading: "Hashir" in dark charcoal, "Shaikh" in gold (Reference Image)
-        RichText(
-          textAlign: centerOnMobile ? TextAlign.center : TextAlign.start,
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: '${PortfolioData.name}\n',
-                style: AppTypography.headingSerif(
-                  context: context,
-                  fontSize: 64,
-                  fontWeight: FontWeight.w700,
-                  height: 1.05,
-                  letterSpacing: -1.0,
-                  color: isDark ? AppColors.textDark : AppColors.textLight,
+          // 2. Greeting: "Assalamualaikum, I'm"
+          Text(
+            PortfolioData.greeting,
+            style: AppTypography.headingSerif(
+              context: context,
+              fontSize: 26,
+              fontWeight: FontWeight.w500,
+              color: isDark ? const Color(0xFFF7F2E8) : AppColors.textLight,
+            ).copyWith(
+              shadows: isDark
+                  ? [
+                      Shadow(
+                        color: Colors.black.withValues(alpha: 0.8),
+                        blurRadius: 10,
+                        offset: const Offset(0, 1),
+                      ),
+                    ]
+                  : null,
+            ),
+          ),
+          const SizedBox(height: 4),
+
+          // 3. Main Heading: "Hashir" in dark charcoal, "Shaikh" in gold (Reference Image)
+          RichText(
+            textAlign: centerOnMobile ? TextAlign.center : TextAlign.start,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: '${PortfolioData.name}\n',
+                  style: AppTypography.headingSerif(
+                    context: context,
+                    fontSize: isDesktop ? 62 : 46,
+                    fontWeight: FontWeight.w700,
+                    height: 1.05,
+                    letterSpacing: -1.0,
+                    color: isDark ? Colors.white : AppColors.textLight,
+                  ).copyWith(
+                    shadows: [
+                      Shadow(
+                        color: isDark
+                            ? Colors.black.withValues(alpha: 0.85)
+                            : Colors.white.withValues(alpha: 0.8),
+                        blurRadius: 14,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
                 ),
+                TextSpan(
+                  text: PortfolioData.surname,
+                  style: AppTypography.headingSerif(
+                    context: context,
+                    fontSize: isDesktop ? 62 : 46,
+                    fontWeight: FontWeight.w700,
+                    height: 1.05,
+                    letterSpacing: -1.0,
+                    color: isDark ? const Color(0xFFE5B96E) : AppColors.goldPrimary,
+                  ).copyWith(
+                    shadows: [
+                      Shadow(
+                        color: AppColors.goldPrimary.withValues(alpha: 0.65),
+                        blurRadius: 18,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // 4. Professional Subtitle: Highlighted Badge
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+            decoration: BoxDecoration(
+              color: AppColors.goldPrimary.withValues(alpha: isDark ? 0.20 : 0.12),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: AppColors.goldPrimary.withValues(alpha: 0.45),
+                width: 1.1,
               ),
-              TextSpan(
-                text: PortfolioData.surname,
-                style: AppTypography.headingSerif(
-                  context: context,
-                  fontSize: 64,
-                  fontWeight: FontWeight.w700,
-                  height: 1.05,
-                  letterSpacing: -1.0,
-                  color: AppColors.goldPrimary,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 6,
+                  height: 6,
+                  decoration: const BoxDecoration(
+                    color: AppColors.goldPrimary,
+                    shape: BoxShape.circle,
+                  ),
                 ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    PortfolioData.heroTitle,
+                    textAlign: centerOnMobile ? TextAlign.center : TextAlign.start,
+                    style: AppTypography.labelSpaced(
+                      context: context,
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w700,
+                      color: isDark ? const Color(0xFFF7F2E8) : AppColors.navySecondary,
+                      letterSpacing: 2.2,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // 5. Introduction Paragraphs with High Contrast & Soft Text Glow
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Column(
+              crossAxisAlignment: centerOnMobile
+                  ? CrossAxisAlignment.center
+                  : CrossAxisAlignment.start,
+              children: [
+                Text(
+                  PortfolioData.heroBio1,
+                  textAlign: centerOnMobile ? TextAlign.center : TextAlign.start,
+                  style: AppTypography.bodySans(
+                    context: context,
+                    fontSize: 15.5,
+                    fontWeight: FontWeight.w500,
+                    height: 1.65,
+                    color: isDark ? const Color(0xFFF5EFE6) : const Color(0xFF222222),
+                  ).copyWith(
+                    shadows: isDark
+                        ? [
+                            Shadow(
+                              color: Colors.black.withValues(alpha: 0.7),
+                              blurRadius: 6,
+                              offset: const Offset(0, 1),
+                            ),
+                          ]
+                        : null,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  PortfolioData.heroBio2,
+                  textAlign: centerOnMobile ? TextAlign.center : TextAlign.start,
+                  style: AppTypography.bodySans(
+                    context: context,
+                    fontSize: 15.5,
+                    fontWeight: FontWeight.w500,
+                    height: 1.65,
+                    color: isDark ? const Color(0xFFE8E0D5) : const Color(0xFF333333),
+                  ).copyWith(
+                    shadows: isDark
+                        ? [
+                            Shadow(
+                              color: Colors.black.withValues(alpha: 0.7),
+                              blurRadius: 6,
+                              offset: const Offset(0, 1),
+                            ),
+                          ]
+                        : null,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 28),
+
+          // 6. Action Buttons: "Download Resume ->" & "Know More v"
+          Wrap(
+            spacing: 16,
+            runSpacing: 14,
+            alignment: centerOnMobile ? WrapAlignment.center : WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              GlassButton(
+                label: 'Download Resume',
+                icon: Icons.download_rounded,
+                trailingIcon: Icons.arrow_forward_rounded,
+                variant: GlassButtonVariant.primaryGold,
+                onPressed: () => _handleResumeDownload(context),
+              ),
+              GlassButton(
+                label: 'Know More',
+                trailingIcon: Icons.arrow_downward_rounded,
+                variant: GlassButtonVariant.frostedGlass,
+                onPressed: widget.onKnowMorePressed,
               ),
             ],
           ),
-        ),
-        const SizedBox(height: 14),
+          const SizedBox(height: 28),
 
-        // 4. Professional Subtitle: "── COMPUTER SCIENCE & AI/ML STUDENT ──"
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 24,
-              height: 1,
-              color: AppColors.goldPrimary.withValues(alpha: 0.6),
-            ),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                PortfolioData.heroTitle,
-                textAlign: centerOnMobile ? TextAlign.center : TextAlign.start,
-                style: AppTypography.labelSpaced(
-                  context: context,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: isDark ? AppColors.textDark : AppColors.textLight,
-                  letterSpacing: 2.4,
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Container(
-              width: 24,
-              height: 1,
-              color: AppColors.goldPrimary.withValues(alpha: 0.6),
-            ),
-          ],
-        ),
-        const SizedBox(height: 18),
-
-        // 5. Introduction Paragraphs
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 480),
-          child: Column(
-            crossAxisAlignment: centerOnMobile
-                ? CrossAxisAlignment.center
-                : CrossAxisAlignment.start,
+          // 7. Circular Social Links: GitHub, LinkedIn, Instagram, Email
+          Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                PortfolioData.heroBio1,
-                textAlign: centerOnMobile ? TextAlign.center : TextAlign.start,
-                style: AppTypography.bodySans(
-                  context: context,
-                  fontSize: 15,
-                  height: 1.6,
-                  color: isDark ? AppColors.mutedTextDark : AppColors.mutedTextLight,
-                ),
+              GlassIconButton(
+                icon: Icons.code_rounded,
+                tooltip: 'GitHub',
+                onPressed: () => _launchUrl(PortfolioData.githubUrl),
               ),
-              const SizedBox(height: 10),
-              Text(
-                PortfolioData.heroBio2,
-                textAlign: centerOnMobile ? TextAlign.center : TextAlign.start,
-                style: AppTypography.bodySans(
-                  context: context,
-                  fontSize: 15,
-                  height: 1.6,
-                  color: isDark ? AppColors.mutedTextDark : AppColors.mutedTextLight,
-                ),
+              const SizedBox(width: 12),
+              GlassIconButton(
+                icon: Icons.work_outline_rounded,
+                tooltip: 'LinkedIn',
+                onPressed: () => _launchUrl(PortfolioData.linkedinUrl),
+              ),
+              const SizedBox(width: 12),
+              GlassIconButton(
+                icon: Icons.camera_alt_outlined,
+                tooltip: 'Instagram',
+                onPressed: () => _launchUrl(PortfolioData.instagramUrl),
+              ),
+              const SizedBox(width: 12),
+              GlassIconButton(
+                icon: Icons.mail_outline_rounded,
+                tooltip: 'Email Hashir',
+                onPressed: () => _launchUrl('mailto:${PortfolioData.contactEmail}'),
               ),
             ],
           ),
-        ),
-        const SizedBox(height: 28),
-
-        // 6. Action Buttons: "Download Resume ->" & "Know More v"
-        Wrap(
-          spacing: 16,
-          runSpacing: 14,
-          alignment: centerOnMobile ? WrapAlignment.center : WrapAlignment.start,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            GlassButton(
-              label: 'Download Resume',
-              icon: Icons.download_rounded,
-              trailingIcon: Icons.arrow_forward_rounded,
-              variant: GlassButtonVariant.primaryGold,
-              onPressed: () => _handleResumeDownload(context),
-            ),
-            GlassButton(
-              label: 'Know More',
-              trailingIcon: Icons.arrow_downward_rounded,
-              variant: GlassButtonVariant.frostedGlass,
-              onPressed: widget.onKnowMorePressed,
-            ),
-          ],
-        ),
-        const SizedBox(height: 28),
-
-        // 7. Circular Social Links: GitHub, LinkedIn, Instagram, Email
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GlassIconButton(
-              icon: Icons.code_rounded,
-              tooltip: 'GitHub',
-              onPressed: () => _launchUrl(PortfolioData.githubUrl),
-            ),
-            const SizedBox(width: 12),
-            GlassIconButton(
-              icon: Icons.work_outline_rounded,
-              tooltip: 'LinkedIn',
-              onPressed: () => _launchUrl(PortfolioData.linkedinUrl),
-            ),
-            const SizedBox(width: 12),
-            GlassIconButton(
-              icon: Icons.camera_alt_outlined,
-              tooltip: 'Instagram',
-              onPressed: () => _launchUrl(PortfolioData.instagramUrl),
-            ),
-            const SizedBox(width: 12),
-            GlassIconButton(
-              icon: Icons.mail_outline_rounded,
-              tooltip: 'Email Hashir',
-              onPressed: () => _launchUrl('mailto:${PortfolioData.contactEmail}'),
-            ),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
