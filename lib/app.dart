@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_controller.dart';
@@ -164,48 +165,84 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
     return Scaffold(
       body: Stack(
         children: [
-          // 0. Fixed Background Image with Smooth Theme Cross-Fade Transition
+          // 0. Fixed Background Image with Progressive Scroll-Driven Blur
           Positioned.fill(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 700),
-              switchInCurve: Curves.easeInOutCubic,
-              switchOutCurve: Curves.easeInOutCubic,
-              child: Image.asset(
-                bgImagePath,
-                key: ValueKey(bgImagePath),
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-                alignment: Alignment.center,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  color: isDark ? AppColors.bgDark : AppColors.bgLight,
-                ),
-              ),
+            child: AnimatedBuilder(
+              animation: _scrollController,
+              builder: (context, _) {
+                final offset =
+                    _scrollController.hasClients ? _scrollController.offset : 0.0;
+                // Progress from 0.0 at top of hero landing page to 1.0 down the page
+                final progress = (offset / 1800.0).clamp(0.0, 1.0);
+                // Blur: 0.0px on landing page (crystal clear) up to 22.0px at lower pages
+                final blurAmount = progress * 22.0;
+
+                return ImageFiltered(
+                  imageFilter: ImageFilter.blur(
+                    sigmaX: blurAmount,
+                    sigmaY: blurAmount,
+                  ),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 700),
+                    switchInCurve: Curves.easeInOutCubic,
+                    switchOutCurve: Curves.easeInOutCubic,
+                    child: Image.asset(
+                      bgImagePath,
+                      key: ValueKey(bgImagePath),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                      alignment: Alignment.center,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: isDark ? AppColors.bgDark : AppColors.bgLight,
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
 
-          // 0.1 Atmospheric Translucent Tint & Vignette for Readability & Depth
+          // 0.1 Dynamic Veil: High Visibility at Landing Page, Gradually Becoming More Opaque
           Positioned.fill(
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 700),
-              curve: Curves.easeInOutCubic,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: isDark
-                      ? [
-                          const Color(0xFF0F1014).withValues(alpha: 0.88),
-                          const Color(0xFF13151A).withValues(alpha: 0.74),
-                          const Color(0xFF0C0D11).withValues(alpha: 0.90),
-                        ]
-                      : [
-                          const Color(0xFFF7F2E8).withValues(alpha: 0.84),
-                          const Color(0xFFFAF6EE).withValues(alpha: 0.70),
-                          const Color(0xFFF4EDE2).withValues(alpha: 0.86),
-                        ],
-                ),
-              ),
+            child: AnimatedBuilder(
+              animation: _scrollController,
+              builder: (context, _) {
+                final offset =
+                    _scrollController.hasClients ? _scrollController.offset : 0.0;
+                final progress = (offset / 1800.0).clamp(0.0, 1.0);
+
+                // High visibility on landing page (low alpha); increases as you scroll down
+                final topAlpha = isDark
+                    ? (0.16 + (progress * 0.72)).clamp(0.0, 0.92)
+                    : (0.12 + (progress * 0.74)).clamp(0.0, 0.90);
+                final midAlpha = isDark
+                    ? (0.08 + (progress * 0.68)).clamp(0.0, 0.82)
+                    : (0.05 + (progress * 0.70)).clamp(0.0, 0.80);
+                final btmAlpha = isDark
+                    ? (0.22 + (progress * 0.70)).clamp(0.0, 0.94)
+                    : (0.18 + (progress * 0.72)).clamp(0.0, 0.92);
+
+                return Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: isDark
+                          ? [
+                              const Color(0xFF0F1014).withValues(alpha: topAlpha),
+                              const Color(0xFF13151A).withValues(alpha: midAlpha),
+                              const Color(0xFF0C0D11).withValues(alpha: btmAlpha),
+                            ]
+                          : [
+                              const Color(0xFFF7F2E8).withValues(alpha: topAlpha),
+                              const Color(0xFFFAF6EE).withValues(alpha: midAlpha),
+                              const Color(0xFFF4EDE2).withValues(alpha: btmAlpha),
+                            ],
+                    ),
+                  ),
+                );
+              },
             ),
           ),
 

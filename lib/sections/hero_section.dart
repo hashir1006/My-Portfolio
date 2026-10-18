@@ -128,7 +128,6 @@ class _HeroSectionState extends State<HeroSection>
     final size = MediaQuery.of(context).size;
     final isDesktop = size.width >= 960;
     final isTablet = size.width >= 650 && size.width < 960;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       width: double.infinity,
@@ -138,40 +137,7 @@ class _HeroSectionState extends State<HeroSection>
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // 1. Left Persian Architectural curved side border (matching reference image)
-          if (size.width >= 720)
-            Positioned(
-              left: 0,
-              top: 0,
-              bottom: 0,
-              width: 52,
-              child: CustomPaint(
-                painter: PersianSideBorderPainter(
-                  goldColor: AppColors.goldPrimary,
-                  darkColor: isDark ? const Color(0xFF1B1D24) : AppColors.navySecondary,
-                  isDark: isDark,
-                ),
-              ),
-            ),
-
-          // 2. Faint Mosque Silhouettes in the distant background
-          Positioned(
-            bottom: 40,
-            left: 0,
-            right: 0,
-            height: 180,
-            child: Opacity(
-              opacity: isDark ? 0.08 : 0.12,
-              child: CustomPaint(
-                painter: MosqueSilhouettePainter(
-                  tintColor: isDark ? AppColors.goldMuted : AppColors.goldPrimary,
-                  opacity: 0.8,
-                ),
-              ),
-            ),
-          ),
-
-          // 3. Main Content
+          // Main Hero Content
           Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1140),
