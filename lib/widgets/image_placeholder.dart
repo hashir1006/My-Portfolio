@@ -168,35 +168,38 @@ class _HeroPortraitCutoutState extends State<HeroPortraitCutout>
                     ),
                   ),
 
-                  // 4. Authentic Portrait Cutout Image with Smooth Bottom Gradient Grounding and Zoom Scale
+                  // 4. Authentic Portrait Cutout Image with Strict Bottom Cropping and Zoom Scale
                   Positioned.fill(
-                    child: ShaderMask(
-                      shaderCallback: (Rect bounds) {
-                        return const LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: [0.0, 0.78, 0.98],
-                          colors: [
-                            Colors.black,
-                            Colors.black,
-                            Colors.transparent,
-                          ],
-                        ).createShader(bounds);
-                      },
-                      blendMode: BlendMode.dstIn,
-                      child: Transform.scale(
-                        scale: totalScale,
-                        // Anchors near head & upper chest so zoom crops into the exact bust framing
-                        alignment: const Alignment(0.0, -0.72),
-                        child: Image.asset(
-                          assetPath,
-                          fit: BoxFit.contain,
-                          alignment: Alignment.bottomCenter,
-                          filterQuality: FilterQuality.high,
-                          errorBuilder: (context, error, stackTrace) =>
-                              _FallbackPortrait(
-                            width: targetWidth,
-                            height: targetHeight,
+                    child: ClipRect(
+                      clipBehavior: Clip.hardEdge,
+                      child: ShaderMask(
+                        shaderCallback: (Rect bounds) {
+                          return const LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            stops: [0.0, 0.74, 0.98],
+                            colors: [
+                              Colors.black,
+                              Colors.black,
+                              Colors.transparent,
+                            ],
+                          ).createShader(bounds);
+                        },
+                        blendMode: BlendMode.dstIn,
+                        child: Transform.scale(
+                          scale: totalScale,
+                          // Anchors near head & upper chest so zoom crops into the exact bust framing
+                          alignment: const Alignment(0.0, -0.72),
+                          child: Image.asset(
+                            assetPath,
+                            fit: BoxFit.contain,
+                            alignment: Alignment.bottomCenter,
+                            filterQuality: FilterQuality.high,
+                            errorBuilder: (context, error, stackTrace) =>
+                                _FallbackPortrait(
+                              width: targetWidth,
+                              height: targetHeight,
+                            ),
                           ),
                         ),
                       ),

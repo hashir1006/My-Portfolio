@@ -81,8 +81,12 @@ class _HeroSectionState extends State<HeroSection>
       ),
     );
 
-    // Sequence: First slide-in at 1.0x (while loading), then seamlessly transition into smooth fast zoom
-    _entranceController.forward().then((_) {
+    // Sequence:
+    // 1. First slide-in at 1.0x (full image while loading)
+    // 2. Remain full image for 3 seconds after homepage completely loads
+    // 3. Smoothly and quickly crop & scale simultaneously into the bust portrait
+    _entranceController.forward().then((_) async {
+      await Future.delayed(const Duration(seconds: 3));
       if (mounted) {
         _zoomController.forward();
       }
@@ -176,6 +180,7 @@ class _HeroSectionState extends State<HeroSection>
       ),
       child: Stack(
         alignment: Alignment.center,
+        clipBehavior: Clip.hardEdge,
         children: [
           // Main Hero Content with Fast Split Slide Animations
           Center(
