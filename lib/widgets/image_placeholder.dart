@@ -70,8 +70,8 @@ class _HeroPortraitCutoutState extends State<HeroPortraitCutout>
         final assetPath =
             widget.imageAssetPath ?? 'assets/images/hashir_portrait.png';
 
-        // Scale factors: from 1.0 (full body) to 1.95 (close-up chest/portrait crop)
-        final baseScale = 1.0 + (0.95 * zoom);
+        // Scale factors: from 1.0 (full body) to 2.15 (close-up bust crop matching reference image)
+        final baseScale = 1.0 + (1.15 * zoom);
         final hoverScale = _isHovered ? 1.025 : 1.0;
         final totalScale = baseScale * hoverScale;
 
@@ -80,8 +80,8 @@ class _HeroPortraitCutoutState extends State<HeroPortraitCutout>
         final haloDimension = targetWidth * (0.88 + (0.12 * zoom));
 
         // Floating badge positions: adapt naturally when shoulders expand on zoom
-        final badgeTopTop = targetHeight * (0.16 + (0.12 * zoom));
-        final badgeTopRight = -8.0 - (12.0 * zoom);
+        final badgeTopTop = targetHeight * (0.16 + (0.24 * zoom));
+        final badgeTopRight = -8.0 - (16.0 * zoom);
 
         final badgeBottomBottom = targetHeight * (0.08 - (0.02 * zoom));
         final badgeBottomLeft = -6.0 - (8.0 * zoom);
@@ -177,7 +177,7 @@ class _HeroPortraitCutoutState extends State<HeroPortraitCutout>
                           return const LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            stops: [0.0, 0.74, 0.98],
+                            stops: [0.0, 0.72, 0.98],
                             colors: [
                               Colors.black,
                               Colors.black,
@@ -188,12 +188,12 @@ class _HeroPortraitCutoutState extends State<HeroPortraitCutout>
                         blendMode: BlendMode.dstIn,
                         child: Transform.scale(
                           scale: totalScale,
-                          // Anchors near head & upper chest so zoom crops into the exact bust framing
-                          alignment: const Alignment(0.0, -0.72),
+                          // Anchors at topCenter so the head is NEVER cut off and preserves headroom!
+                          alignment: Alignment.topCenter,
                           child: Image.asset(
                             assetPath,
                             fit: BoxFit.contain,
-                            alignment: Alignment.bottomCenter,
+                            alignment: Alignment.topCenter,
                             filterQuality: FilterQuality.high,
                             errorBuilder: (context, error, stackTrace) =>
                                 _FallbackPortrait(
