@@ -73,23 +73,21 @@ class ExperienceSection extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  Wrap(
+                                    alignment: WrapAlignment.spaceBetween,
+                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    spacing: 12,
+                                    runSpacing: 6,
                                     children: [
-                                      Expanded(
-                                        child: Text(
-                                          item.role,
-                                          style: AppTypography.headingSerif(
-                                            context: context,
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w700,
-                                            color: isDark
-                                                ? AppColors.textDark
-                                                : AppColors.textLight,
-                                          ),
+                                      Text(
+                                        item.role,
+                                        style: AppTypography.headingSerif(
+                                          context: context,
+                                          fontSize: isDesktop ? 22 : 19,
+                                          fontWeight: FontWeight.w700,
+                                          color: isDark
+                                              ? AppColors.textDark
+                                              : AppColors.textLight,
                                         ),
                                       ),
                                       Container(
@@ -107,7 +105,7 @@ class ExperienceSection extends StatelessWidget {
                                           item.period,
                                           style: AppTypography.bodySans(
                                             context: context,
-                                            fontSize: 12,
+                                            fontSize: 11.5,
                                             fontWeight: FontWeight.w600,
                                             color: AppColors.goldPrimary,
                                           ),

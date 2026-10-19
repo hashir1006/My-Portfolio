@@ -6,7 +6,7 @@
     "background_color": "#F7F2E8",
     "theme_color": "#B88946",
     "description": "Personal Portfolio of Hashir Shaikh — Computer Science & AI/ML Student at MHSSCE, Mumbai.",
-    "orientation": "portrait-primary",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {

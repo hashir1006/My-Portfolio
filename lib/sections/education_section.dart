@@ -13,10 +13,147 @@ class EducationSection extends StatelessWidget {
     final isDesktop = size.width >= 960;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    Widget buildCapIcon(double iconBoxSize, double iconSize, double radius) {
+      return Container(
+        width: iconBoxSize,
+        height: iconBoxSize,
+        decoration: BoxDecoration(
+          color: AppColors.goldPrimary.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(radius),
+          border: Border.all(
+            color: AppColors.goldPrimary.withValues(alpha: 0.4),
+            width: 1.2,
+          ),
+        ),
+        child: Icon(
+          Icons.school_rounded,
+          color: AppColors.goldPrimary,
+          size: iconSize,
+        ),
+      );
+    }
+
+    Widget buildDurationBadge() {
+      return Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 11,
+          vertical: 5,
+        ),
+        decoration: BoxDecoration(
+          color: AppColors.goldPrimary.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: AppColors.goldPrimary.withValues(alpha: 0.35),
+          ),
+        ),
+        child: Text(
+          PortfolioData.studyDuration,
+          style: AppTypography.bodySans(
+            context: context,
+            fontSize: 11.5,
+            fontWeight: FontWeight.w600,
+            color: AppColors.goldPrimary,
+          ),
+        ),
+      );
+    }
+
+    Widget buildAcademicDetails() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            PortfolioData.degree,
+            style: AppTypography.bodySans(
+              context: context,
+              fontSize: isDesktop ? 16 : 14.5,
+              fontWeight: FontWeight.w600,
+              color: isDark ? AppColors.goldMuted : AppColors.goldDark,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Specialization: ${PortfolioData.department}',
+            style: AppTypography.bodySans(
+              context: context,
+              fontSize: 14,
+              color: isDark ? AppColors.mutedTextDark : AppColors.mutedTextLight,
+            ),
+          ),
+          const SizedBox(height: 8),
+
+          // Location Pin
+          Row(
+            children: [
+              Icon(
+                Icons.location_on_outlined,
+                size: 15,
+                color: isDark ? AppColors.mutedTextDark : AppColors.mutedTextLight,
+              ),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  PortfolioData.location,
+                  style: AppTypography.bodySans(
+                    context: context,
+                    fontSize: 12.5,
+                    color: isDark ? AppColors.mutedTextDark : AppColors.mutedTextLight,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+
+          // Key Subjects / Focus Areas
+          Text(
+            'Core Academic Focus:',
+            style: AppTypography.bodySans(
+              context: context,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: PortfolioData.relevantCoursework.map((course) {
+              return Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 11,
+                  vertical: 5,
+                ),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? AppColors.surfaceDarkElevated
+                      : AppColors.surfaceLightAlt,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: isDark
+                        ? AppColors.borderDark
+                        : AppColors.borderLight,
+                  ),
+                ),
+                child: Text(
+                  course,
+                  style: AppTypography.bodySans(
+                    context: context,
+                    fontSize: 12,
+                    color: isDark ? AppColors.textDark : AppColors.textLight,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      );
+    }
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
-        horizontal: isDesktop ? 36 : 24,
+        horizontal: isDesktop ? 36 : (size.width < 400 ? 16 : 24),
         vertical: 64,
       ),
       child: Center(
@@ -34,164 +171,67 @@ class EducationSection extends StatelessWidget {
               // Education Timeline / Card
               GlassBox(
                 borderRadius: 24,
-                padding: EdgeInsets.all(isDesktop ? 38 : 22),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Graduation Cap Icon Badge
-                    Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        color: AppColors.goldPrimary.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppColors.goldPrimary.withValues(alpha: 0.4),
-                          width: 1.2,
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.school_rounded,
-                        color: AppColors.goldPrimary,
-                        size: 28,
-                      ),
-                    ),
-                    const SizedBox(width: 24),
-
-                    // Academic Details
-                    Expanded(
-                      child: Column(
+                padding: EdgeInsets.all(isDesktop ? 38 : (size.width < 400 ? 18 : 22)),
+                child: size.width < 580
+                    ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: Text(
-                                  PortfolioData.institution,
-                                  style: AppTypography.headingSerif(
-                                    context: context,
-                                    fontSize: isDesktop ? 26 : 21,
-                                    fontWeight: FontWeight.w700,
-                                    color: isDark ? AppColors.textDark : AppColors.textLight,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.goldPrimary.withValues(alpha: 0.12),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: AppColors.goldPrimary.withValues(alpha: 0.35),
-                                  ),
-                                ),
-                                child: Text(
-                                  PortfolioData.studyDuration,
-                                  style: AppTypography.bodySans(
-                                    context: context,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.goldPrimary,
-                                  ),
-                                ),
-                              ),
+                              buildCapIcon(46, 24, 14),
+                              buildDurationBadge(),
                             ],
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            PortfolioData.institution,
+                            style: AppTypography.headingSerif(
+                              context: context,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                              color: isDark ? AppColors.textDark : AppColors.textLight,
+                            ),
                           ),
                           const SizedBox(height: 6),
-
-                          // Degree & Specialization
-                          Text(
-                            PortfolioData.degree,
-                            style: AppTypography.bodySans(
-                              context: context,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: isDark ? AppColors.goldMuted : AppColors.goldDark,
+                          buildAcademicDetails(),
+                        ],
+                      )
+                    : Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          buildCapIcon(56, 28, 16),
+                          const SizedBox(width: 24),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Wrap(
+                                  alignment: WrapAlignment.spaceBetween,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: 12,
+                                  runSpacing: 8,
+                                  children: [
+                                    Text(
+                                      PortfolioData.institution,
+                                      style: AppTypography.headingSerif(
+                                        context: context,
+                                        fontSize: isDesktop ? 26 : 21,
+                                        fontWeight: FontWeight.w700,
+                                        color: isDark ? AppColors.textDark : AppColors.textLight,
+                                      ),
+                                    ),
+                                    buildDurationBadge(),
+                                  ],
+                                ),
+                                const SizedBox(height: 6),
+                                buildAcademicDetails(),
+                              ],
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Specialization: ${PortfolioData.department}',
-                            style: AppTypography.bodySans(
-                              context: context,
-                              fontSize: 14.5,
-                              color: isDark ? AppColors.mutedTextDark : AppColors.mutedTextLight,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-
-                          // Location Pin
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.location_on_outlined,
-                                size: 16,
-                                color: isDark ? AppColors.mutedTextDark : AppColors.mutedTextLight,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                PortfolioData.location,
-                                style: AppTypography.bodySans(
-                                  context: context,
-                                  fontSize: 13,
-                                  color: isDark ? AppColors.mutedTextDark : AppColors.mutedTextLight,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-
-                          // Key Subjects / Focus Areas
-                          Text(
-                            'Core Academic Focus:',
-                            style: AppTypography.bodySans(
-                              context: context,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: PortfolioData.relevantCoursework.map((course) {
-                              return Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: isDark
-                                      ? AppColors.surfaceDarkElevated
-                                      : AppColors.surfaceLightAlt,
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                    color: isDark
-                                        ? AppColors.borderDark
-                                        : AppColors.borderLight,
-                                  ),
-                                ),
-                                child: Text(
-                                  course,
-                                  style: AppTypography.bodySans(
-                                    context: context,
-                                    fontSize: 12.5,
-                                    color: isDark ? AppColors.textDark : AppColors.textLight,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
               ),
             ],
           ),

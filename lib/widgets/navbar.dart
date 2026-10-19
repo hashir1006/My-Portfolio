@@ -50,8 +50,8 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
         Center(
           child: Container(
             margin: EdgeInsets.symmetric(
-              horizontal: isDesktop ? 24 : 16,
-              vertical: 12,
+              horizontal: isDesktop ? 24 : (width < 380 ? 10 : 16),
+              vertical: isDesktop ? 12 : 8,
             ),
             constraints: const BoxConstraints(maxWidth: 1180),
             height: 60,
@@ -298,9 +298,11 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
   }
 
   Widget _buildMobileDrawer(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(16),
+      constraints: BoxConstraints(maxHeight: screenHeight * 0.72),
       decoration: BoxDecoration(
         color: AppColors.navCapsuleLight.withValues(alpha: 0.98),
         borderRadius: BorderRadius.circular(20),
@@ -314,43 +316,49 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
           ),
         ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ...navItems.map((item) {
-            final isActive = widget.activeSectionId == item.sectionId;
-            return ListTile(
-              title: Text(
-                item.label,
-                style: AppTypography.bodySans(
-                  context: context,
-                  fontSize: 15,
-                  fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
-                  color: isActive ? AppColors.goldPrimary : const Color(0xFFF7F2E8),
-                ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ...navItems.map((item) {
+                final isActive = widget.activeSectionId == item.sectionId;
+                return ListTile(
+                  title: Text(
+                    item.label,
+                    style: AppTypography.bodySans(
+                      context: context,
+                      fontSize: 15,
+                      fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
+                      color: isActive ? AppColors.goldPrimary : const Color(0xFFF7F2E8),
+                    ),
+                  ),
+                  trailing: isActive
+                      ? const Icon(Icons.check_circle_rounded, color: AppColors.goldPrimary, size: 18)
+                      : null,
+                  onTap: () {
+                    setState(() => _isMobileMenuOpen = false);
+                    widget.onSectionSelected(item.sectionId);
+                  },
+                );
+              }),
+              const SizedBox(height: 12),
+              GlassButton(
+                label: "Let's Connect",
+                icon: Icons.mail_outline_rounded,
+                trailingIcon: Icons.arrow_forward_rounded,
+                variant: GlassButtonVariant.primaryGold,
+                width: double.infinity,
+                onPressed: () {
+                  setState(() => _isMobileMenuOpen = false);
+                  widget.onSectionSelected('contact');
+                },
               ),
-              trailing: isActive
-                  ? const Icon(Icons.check_circle_rounded, color: AppColors.goldPrimary, size: 18)
-                  : null,
-              onTap: () {
-                setState(() => _isMobileMenuOpen = false);
-                widget.onSectionSelected(item.sectionId);
-              },
-            );
-          }),
-          const SizedBox(height: 12),
-          GlassButton(
-            label: "Let's Connect",
-            icon: Icons.mail_outline_rounded,
-            trailingIcon: Icons.arrow_forward_rounded,
-            variant: GlassButtonVariant.primaryGold,
-            width: double.infinity,
-            onPressed: () {
-              setState(() => _isMobileMenuOpen = false);
-              widget.onSectionSelected('contact');
-            },
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

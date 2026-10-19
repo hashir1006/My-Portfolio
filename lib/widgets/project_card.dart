@@ -54,68 +54,76 @@ class _ProjectCardState extends State<ProjectCard> {
               ),
             ],
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.goldPrimary.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.goldPrimary.withValues(alpha: 0.4)),
-                ),
-                child: Text(
-                  widget.project.status,
-                  style: AppTypography.labelSpaced(
-                    context: context,
-                    fontSize: 11,
-                    letterSpacing: 1.5,
+          content: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.70,
+              maxWidth: 500,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.goldPrimary.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppColors.goldPrimary.withValues(alpha: 0.4)),
+                    ),
+                    child: Text(
+                      widget.project.status,
+                      style: AppTypography.labelSpaced(
+                        context: context,
+                        fontSize: 11,
+                        letterSpacing: 1.5,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 14),
-              Text(
-                widget.project.description,
-                style: AppTypography.bodySans(
-                  context: context,
-                  fontSize: 14.5,
-                  height: 1.6,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Technologies Utilized:',
-                style: AppTypography.bodySans(
-                  context: context,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: widget.project.technologies.map((t) {
-                  return Chip(
-                    label: Text(t),
-                    labelStyle: AppTypography.bodySans(
+                  const SizedBox(height: 14),
+                  Text(
+                    widget.project.description,
+                    style: AppTypography.bodySans(
                       context: context,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: isDark ? AppColors.textDark : AppColors.textLight,
+                      fontSize: 14.5,
+                      height: 1.6,
                     ),
-                    backgroundColor: isDark
-                        ? const Color(0xFF262933).withValues(alpha: 0.8)
-                        : Colors.white.withValues(alpha: 0.8),
-                    side: BorderSide(
-                      color: isDark ? AppColors.borderDark : AppColors.borderLight,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Technologies Utilized:',
+                    style: AppTypography.bodySans(
+                      context: context,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  );
-                }).toList(),
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: widget.project.technologies.map((t) {
+                      return Chip(
+                        label: Text(t),
+                        labelStyle: AppTypography.bodySans(
+                          context: context,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: isDark ? AppColors.textDark : AppColors.textLight,
+                        ),
+                        backgroundColor: isDark
+                            ? const Color(0xFF262933).withValues(alpha: 0.8)
+                            : Colors.white.withValues(alpha: 0.8),
+                        side: BorderSide(
+                          color: isDark ? AppColors.borderDark : AppColors.borderLight,
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
           actions: [
             TextButton(

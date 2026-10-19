@@ -29,6 +29,14 @@ class HashirPortfolioApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeController.themeMode,
+          scrollBehavior: const MaterialScrollBehavior().copyWith(
+            dragDevices: {
+              PointerDeviceKind.mouse,
+              PointerDeviceKind.touch,
+              PointerDeviceKind.stylus,
+              PointerDeviceKind.trackpad,
+            },
+          ),
           home: PortfolioHomePage(themeController: themeController),
         );
       },
@@ -252,8 +260,8 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
             physics: const ClampingScrollPhysics(),
             child: Column(
               children: [
-                // Top padding to account for floating sticky navbar
-                const SizedBox(height: 76),
+                // Top padding to account for floating sticky navbar and mobile notch/status bar
+                SizedBox(height: 76 + MediaQuery.of(context).padding.top),
 
                 // Hero Section
                 Container(
@@ -319,10 +327,13 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
             top: 0,
             left: 0,
             right: 0,
-            child: NavigationBarWidget(
-              activeSectionId: _activeSectionId,
-              onSectionSelected: _scrollToSection,
-              themeController: widget.themeController,
+            child: SafeArea(
+              bottom: false,
+              child: NavigationBarWidget(
+                activeSectionId: _activeSectionId,
+                onSectionSelected: _scrollToSection,
+                themeController: widget.themeController,
+              ),
             ),
           ),
         ],

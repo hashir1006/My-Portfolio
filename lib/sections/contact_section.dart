@@ -265,9 +265,11 @@ class _ContactSectionState extends State<ContactSection> {
                 const SizedBox(height: 3),
                 Text(
                   value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: AppTypography.bodySans(
                     context: context,
-                    fontSize: 14,
+                    fontSize: MediaQuery.of(context).size.width < 380 ? 12.5 : 14,
                     fontWeight: FontWeight.w600,
                     color: isDark ? AppColors.textDark : AppColors.textLight,
                   ),

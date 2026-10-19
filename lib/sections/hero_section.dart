@@ -599,27 +599,26 @@ class _HeroSectionState extends State<HeroSection>
           const SizedBox(height: 20),
 
           // 7. Circular Social Links: GitHub, LinkedIn, Instagram, Email
-          Row(
-            mainAxisSize: MainAxisSize.min,
+          Wrap(
+            alignment: centerOnMobile ? WrapAlignment.center : WrapAlignment.start,
+            spacing: 12,
+            runSpacing: 8,
             children: [
               GlassIconButton(
                 icon: Icons.code_rounded,
                 tooltip: 'GitHub',
                 onPressed: () => _launchUrl(PortfolioData.githubUrl),
               ),
-              const SizedBox(width: 12),
               GlassIconButton(
                 icon: Icons.work_outline_rounded,
                 tooltip: 'LinkedIn',
                 onPressed: () => _launchUrl(PortfolioData.linkedinUrl),
               ),
-              const SizedBox(width: 12),
               GlassIconButton(
                 icon: Icons.camera_alt_outlined,
                 tooltip: 'Instagram',
                 onPressed: () => _launchUrl(PortfolioData.instagramUrl),
               ),
-              const SizedBox(width: 12),
               GlassIconButton(
                 icon: Icons.mail_outline_rounded,
                 tooltip: 'Email Hashir',

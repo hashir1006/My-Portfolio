@@ -104,27 +104,26 @@ class FooterWidget extends StatelessWidget {
               const SizedBox(height: 28),
 
               // Social Icons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 12,
+                runSpacing: 8,
                 children: [
                   GlassIconButton(
                     icon: Icons.code_rounded,
                     tooltip: 'GitHub',
                     onPressed: () => _launchUrl(PortfolioData.githubUrl),
                   ),
-                  const SizedBox(width: 12),
                   GlassIconButton(
                     icon: Icons.work_outline_rounded,
                     tooltip: 'LinkedIn',
                     onPressed: () => _launchUrl(PortfolioData.linkedinUrl),
                   ),
-                  const SizedBox(width: 12),
                   GlassIconButton(
                     icon: Icons.camera_alt_outlined,
                     tooltip: 'Instagram',
                     onPressed: () => _launchUrl(PortfolioData.instagramUrl),
                   ),
-                  const SizedBox(width: 12),
                   GlassIconButton(
                     icon: Icons.mail_outline_rounded,
                     tooltip: 'Email',

@@ -61,10 +61,13 @@ class _HeroPortraitCutoutState extends State<HeroPortraitCutout>
     return LayoutBuilder(
       builder: (context, constraints) {
         final availableWidth = constraints.maxWidth;
-        final targetWidth =
-            (widget.width ?? availableWidth.clamp(280.0, 440.0)).toDouble();
+        final rawWidth = widget.width ?? (availableWidth.isFinite ? availableWidth.clamp(260.0, 440.0) : 400.0);
+        final targetWidth = math.min(
+          rawWidth,
+          availableWidth.isFinite ? availableWidth : rawWidth,
+        ).toDouble();
         final targetHeight =
-            (widget.height ?? (targetWidth * 1.35).clamp(380.0, 580.0)).toDouble();
+            (widget.height ?? (targetWidth * 1.35).clamp(360.0, 580.0)).toDouble();
 
         final assetPath =
             widget.imageAssetPath ?? 'assets/images/hashir_portrait.png';
