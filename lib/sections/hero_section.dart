@@ -22,25 +22,27 @@ class HeroSection extends StatefulWidget {
 }
 
 class _HeroSectionState extends State<HeroSection>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animController;
+    with TickerProviderStateMixin {
+  late AnimationController _entranceController;
+  late AnimationController _zoomController;
   late Animation<double> _leftFadeAnimation;
   late Animation<Offset> _leftSlideAnimation;
   late Animation<double> _rightFadeAnimation;
   late Animation<Offset> _rightSlideAnimation;
+  late Animation<double> _zoomAnimation;
 
   @override
   void initState() {
     super.initState();
-    // Snappy, fast and smooth entrance animation (~680ms)
-    _animController = AnimationController(
+    // 1. Entrance animation (rapid, smooth split slide-in from left & right, ~650ms)
+    _entranceController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 680),
+      duration: const Duration(milliseconds: 650),
     );
 
     // Left description box: Slides in fast from left (-0.45, 0) to center
     _leftFadeAnimation = CurvedAnimation(
-      parent: _animController,
+      parent: _entranceController,
       curve: const Interval(0.0, 0.85, curve: Curves.easeOut),
     );
 
@@ -48,13 +50,13 @@ class _HeroSectionState extends State<HeroSection>
       begin: const Offset(-0.45, 0),
       end: Offset.zero,
     ).animate(CurvedAnimation(
-      parent: _animController,
+      parent: _entranceController,
       curve: Curves.easeOutCubic,
     ));
 
-    // Right portrait cutout: Slides in fast from right (0.45, 0) to center
+    // Right portrait cutout: Slides in fast from right (0.45, 0) to center at normal scale (while loading)
     _rightFadeAnimation = CurvedAnimation(
-      parent: _animController,
+      parent: _entranceController,
       curve: const Interval(0.0, 0.85, curve: Curves.easeOut),
     );
 
@@ -62,16 +64,35 @@ class _HeroSectionState extends State<HeroSection>
       begin: const Offset(0.45, 0),
       end: Offset.zero,
     ).animate(CurvedAnimation(
-      parent: _animController,
+      parent: _entranceController,
       curve: Curves.easeOutCubic,
     ));
 
-    _animController.forward();
+    // 2. Post-loading Zoom Transition: Smooth and fast zoom (scale up to focused bust portrait, ~600ms)
+    _zoomController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+
+    _zoomAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _zoomController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
+
+    // Sequence: First slide-in at 1.0x (while loading), then seamlessly transition into smooth fast zoom
+    _entranceController.forward().then((_) {
+      if (mounted) {
+        _zoomController.forward();
+      }
+    });
   }
 
   @override
   void dispose() {
-    _animController.dispose();
+    _entranceController.dispose();
+    _zoomController.dispose();
     super.dispose();
   }
 
@@ -181,15 +202,27 @@ class _HeroSectionState extends State<HeroSection>
                             ),
                           ),
                           const SizedBox(width: 48),
-                          // Right Column: Authentic Cutout Portrait (Slides from Right to Center)
+                          // Right Column: Authentic Cutout Portrait (Slides from Right to Center, then Zooms in)
                           Expanded(
                             flex: 5,
                             child: SlideTransition(
                               position: _rightSlideAnimation,
                               child: FadeTransition(
                                 opacity: _rightFadeAnimation,
-                                child: const Center(
-                                  child: HeroPortraitCutout(),
+                                child: Center(
+                                  child: AnimatedBuilder(
+                                    animation: _zoomAnimation,
+                                    builder: (context, _) => HeroPortraitCutout(
+                                      zoomProgress: _zoomAnimation.value,
+                                      onTap: () {
+                                        if (_zoomController.isCompleted) {
+                                          _zoomController.reverse();
+                                        } else {
+                                          _zoomController.forward();
+                                        }
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -200,15 +233,26 @@ class _HeroSectionState extends State<HeroSection>
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const SizedBox(height: 16),
-                          // Cutout Portrait slides smoothly from Right to Center on Mobile/Tablet
+                          // Cutout Portrait slides smoothly from Right to Center on Mobile/Tablet, then Zooms in
                           SlideTransition(
                             position: _rightSlideAnimation,
                             child: FadeTransition(
                               opacity: _rightFadeAnimation,
                               child: Center(
-                                child: HeroPortraitCutout(
-                                  width: isTablet ? 320 : 270,
-                                  height: isTablet ? 440 : 380,
+                                child: AnimatedBuilder(
+                                  animation: _zoomAnimation,
+                                  builder: (context, _) => HeroPortraitCutout(
+                                    zoomProgress: _zoomAnimation.value,
+                                    width: isTablet ? 320 : 270,
+                                    height: isTablet ? 440 : 380,
+                                    onTap: () {
+                                      if (_zoomController.isCompleted) {
+                                        _zoomController.reverse();
+                                      } else {
+                                        _zoomController.forward();
+                                      }
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
