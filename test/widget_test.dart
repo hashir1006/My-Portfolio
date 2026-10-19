@@ -15,7 +15,8 @@ void main() {
     final themeController = ThemeController();
 
     await tester.pumpWidget(HashirPortfolioApp(themeController: themeController));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 800));
+    await tester.pump(const Duration(milliseconds: 400));
 
     // Verify brand title and key sections exist
     expect(find.text('HASHIR SHAIKH'), findsWidgets);

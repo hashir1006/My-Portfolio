@@ -24,24 +24,42 @@ class HeroSection extends StatefulWidget {
 class _HeroSectionState extends State<HeroSection>
     with SingleTickerProviderStateMixin {
   late AnimationController _animController;
-  late Animation<double> _fadeAnimation;
-  late Animation<Offset> _slideAnimation;
+  late Animation<double> _leftFadeAnimation;
+  late Animation<Offset> _leftSlideAnimation;
+  late Animation<double> _rightFadeAnimation;
+  late Animation<Offset> _rightSlideAnimation;
 
   @override
   void initState() {
     super.initState();
+    // Snappy, fast and smooth entrance animation (~680ms)
     _animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 680),
     );
 
-    _fadeAnimation = CurvedAnimation(
+    // Left description box: Slides in fast from left (-0.45, 0) to center
+    _leftFadeAnimation = CurvedAnimation(
       parent: _animController,
-      curve: Curves.easeOut,
+      curve: const Interval(0.0, 0.85, curve: Curves.easeOut),
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.08),
+    _leftSlideAnimation = Tween<Offset>(
+      begin: const Offset(-0.45, 0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _animController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    // Right portrait cutout: Slides in fast from right (0.45, 0) to center
+    _rightFadeAnimation = CurvedAnimation(
+      parent: _animController,
+      curve: const Interval(0.0, 0.85, curve: Curves.easeOut),
+    );
+
+    _rightSlideAnimation = Tween<Offset>(
+      begin: const Offset(0.45, 0),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _animController,
@@ -138,7 +156,7 @@ class _HeroSectionState extends State<HeroSection>
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Main Hero Content
+          // Main Hero Content with Fast Split Slide Animations
           Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1140),
@@ -147,48 +165,68 @@ class _HeroSectionState extends State<HeroSection>
                   horizontal: isDesktop ? 36 : 24,
                   vertical: isDesktop ? 48 : 32,
                 ),
-                child: FadeTransition(
-                  opacity: _fadeAnimation,
-                  child: SlideTransition(
-                    position: _slideAnimation,
-                    child: isDesktop
-                        ? Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              // Left Column: Text, CTAs, Socials
-                              Expanded(
-                                flex: 6,
+                child: isDesktop
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Left Column: Description Box (Slides from Left to Center)
+                          Expanded(
+                            flex: 6,
+                            child: SlideTransition(
+                              position: _leftSlideAnimation,
+                              child: FadeTransition(
+                                opacity: _leftFadeAnimation,
                                 child: _buildLeftHeroContent(context),
                               ),
-                              const SizedBox(width: 40),
-                              // Right Column: Faceless Portrait Placeholder
-                              Expanded(
-                                flex: 5,
-                                child: Center(
-                                  child: HeroPortraitPlaceholder(),
+                            ),
+                          ),
+                          const SizedBox(width: 48),
+                          // Right Column: Authentic Cutout Portrait (Slides from Right to Center)
+                          Expanded(
+                            flex: 5,
+                            child: SlideTransition(
+                              position: _rightSlideAnimation,
+                              child: FadeTransition(
+                                opacity: _rightFadeAnimation,
+                                child: const Center(
+                                  child: HeroPortraitCutout(),
                                 ),
                               ),
-                            ],
-                          )
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const SizedBox(height: 16),
-                              // Right Column shown prominently on tablet/mobile
-                              Center(
-                                child: HeroPortraitPlaceholder(
-                                  width: isTablet ? 300 : 250,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 16),
+                          // Cutout Portrait slides smoothly from Right to Center on Mobile/Tablet
+                          SlideTransition(
+                            position: _rightSlideAnimation,
+                            child: FadeTransition(
+                              opacity: _rightFadeAnimation,
+                              child: Center(
+                                child: HeroPortraitCutout(
+                                  width: isTablet ? 320 : 270,
+                                  height: isTablet ? 440 : 380,
                                 ),
                               ),
-                              const SizedBox(height: 36),
-                              _buildLeftHeroContent(
+                            ),
+                          ),
+                          const SizedBox(height: 32),
+                          // Description Box slides smoothly from Left to Center
+                          SlideTransition(
+                            position: _leftSlideAnimation,
+                            child: FadeTransition(
+                              opacity: _leftFadeAnimation,
+                              child: _buildLeftHeroContent(
                                 context,
                                 centerOnMobile: true,
                               ),
-                            ],
+                            ),
                           ),
-                  ),
-                ),
+                        ],
+                      ),
               ),
             ),
           ),
