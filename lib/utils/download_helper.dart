@@ -1,0 +1,8 @@
+import 'download_helper_stub.dart'
+    if (dart.library.html) 'download_helper_web.dart';
+
+class FileDownloader {
+  static void download(String url, String fileName) {
+    downloadFile(url, fileName);
+  }
+}

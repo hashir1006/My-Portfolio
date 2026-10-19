@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../data/portfolio_data.dart';
 import '../theme/app_theme.dart';
+import '../utils/download_helper.dart';
 import '../widgets/glass_box.dart';
 import '../widgets/glass_button.dart';
 import '../widgets/image_placeholder.dart';
@@ -107,64 +108,39 @@ class _HeroSectionState extends State<HeroSection>
     }
   }
 
-  void _handleResumeDownload(BuildContext context) async {
-    final resumeUri = Uri.parse(PortfolioData.resumeWebUrl);
+  void _handleResumeDownload(BuildContext context) {
     try {
-      if (await canLaunchUrl(resumeUri)) {
-        await launchUrl(resumeUri, mode: LaunchMode.externalApplication);
-        return;
+      FileDownloader.download(
+        PortfolioData.resumeWebUrl,
+        PortfolioData.resumeFileName,
+      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: const [
+                Icon(Icons.download_done_rounded, color: AppColors.goldPrimary, size: 20),
+                SizedBox(width: 10),
+                Text(
+                  'Downloading ${PortfolioData.resumeFileName}...',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+            backgroundColor: const Color(0xFF1E1E1E),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: const BorderSide(color: AppColors.goldPrimary, width: 0.8),
+            ),
+            duration: const Duration(seconds: 3),
+          ),
+        );
       }
-    } catch (_) {}
-
-    // Fallback: Show accessible dialog with direct link & information
-    if (!context.mounted) return;
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-          side: const BorderSide(color: AppColors.goldPrimary),
-        ),
-        title: Row(
-          children: const [
-            Icon(Icons.description_outlined, color: AppColors.goldPrimary),
-            SizedBox(width: 10),
-            Text('Curriculum Vitae / Resume'),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Hashir Shaikh — Computer Science & AI/ML Student\nM. H. Saboo Siddik College of Engineering, Mumbai.',
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'The resume asset is configured at assets/resume/Hashir_Shaikh_Resume.pdf. You can also view GitHub or LinkedIn for up-to-date project records.',
-              style: TextStyle(fontSize: 13, color: Colors.grey),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Close'),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.goldPrimary,
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              _launchUrl(PortfolioData.githubUrl);
-            },
-            child: const Text('Visit GitHub'),
-          ),
-        ],
-      ),
-    );
+    } catch (_) {
+      _launchUrl(PortfolioData.resumeWebUrl);
+    }
   }
 
   @override

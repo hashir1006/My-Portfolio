@@ -6,6 +6,10 @@
   "framework": null,
   "routes": [
     {
+      "src": "/Resume_Hashir_Shaikh.pdf",
+      "dest": "/Resume_Hashir_Shaikh.pdf"
+    },
+    {
       "src": "/Hashir_Shaikh_Resume.pdf",
       "dest": "/Hashir_Shaikh_Resume.pdf"
     },

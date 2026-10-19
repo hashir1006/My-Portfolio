@@ -25,8 +25,12 @@ echo "Building Flutter Web (Release)..."
 flutter build web --release
 
 # Ensure resume is present in web root
-if [ -f "assets/resume/Hashir_Shaikh_Resume.pdf" ]; then
-  cp assets/resume/Hashir_Shaikh_Resume.pdf build/web/Hashir_Shaikh_Resume.pdf || true
+if [ -f "Resume_Hashir_Shaikh.pdf" ]; then
+  cp Resume_Hashir_Shaikh.pdf build/web/Resume_Hashir_Shaikh.pdf || true
+  cp Resume_Hashir_Shaikh.pdf build/web/Hashir_Shaikh_Resume.pdf || true
+elif [ -f "assets/resume/Resume_Hashir_Shaikh.pdf" ]; then
+  cp assets/resume/Resume_Hashir_Shaikh.pdf build/web/Resume_Hashir_Shaikh.pdf || true
+  cp assets/resume/Resume_Hashir_Shaikh.pdf build/web/Hashir_Shaikh_Resume.pdf || true
 fi
 
 echo "=== Build Complete! Output published to build/web ==="

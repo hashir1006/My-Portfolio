@@ -16,12 +16,13 @@ class PortfolioData {
   static const String githubUrl = 'https://github.com/hashir1006';
   static const String linkedinUrl = 'https://www.linkedin.com/in/hashir1006/';
   static const String instagramUrl = 'https://instagram.com/';
-  static const String contactEmail = 'hashir1006@gmail.com'; // Configurable
+  static const String contactEmail = 'hashirshaikh07.ss@gmail.com';
   static const String location = 'Mumbai, Maharashtra, India';
 
   // Resume Paths
-  static const String resumeAssetPath = 'assets/resume/Hashir_Shaikh_Resume.pdf';
-  static const String resumeWebUrl = 'Hashir_Shaikh_Resume.pdf';
+  static const String resumeAssetPath = 'assets/resume/Resume_Hashir_Shaikh.pdf';
+  static const String resumeWebUrl = 'Resume_Hashir_Shaikh.pdf';
+  static const String resumeFileName = 'Resume_Hashir_Shaikh.pdf';
 
   // About Section
   static const String aboutHeading = 'Beyond the Code';
