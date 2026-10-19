@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
-import 'glass_box.dart';
 import 'persian_decorations.dart';
 
 /// Modern Persian-inspired Hero Portrait featuring the user's authentic cutout image,
@@ -79,12 +78,6 @@ class _HeroPortraitCutoutState extends State<HeroPortraitCutout>
         final haloTop = targetHeight * (0.08 - (0.01 * zoom));
         final haloDimension = targetWidth * (0.88 + (0.12 * zoom));
 
-        // Floating badge positions: adapt naturally when shoulders expand on zoom
-        final badgeTopTop = targetHeight * (0.16 + (0.24 * zoom));
-        final badgeTopRight = -8.0 - (16.0 * zoom);
-
-        final badgeBottomBottom = targetHeight * (0.08 - (0.02 * zoom));
-        final badgeBottomLeft = -6.0 - (8.0 * zoom);
 
         return MouseRegion(
           onEnter: (_) => setState(() => _isHovered = true),
@@ -205,113 +198,14 @@ class _HeroPortraitCutoutState extends State<HeroPortraitCutout>
                       ),
                     ),
                   ),
-
-                  // 5. Floating Glass Badge: Top-Right "✦ AI & ML Developer" with glowing status indicator
-                  Positioned(
-                    top: badgeTopTop,
-                    right: badgeTopRight,
-                    child: AnimatedSlide(
-                      offset:
-                          _isHovered ? const Offset(0, -0.06) : Offset.zero,
-                      duration: const Duration(milliseconds: 250),
-                      child: GlassBox(
-                        borderRadius: 20,
-                        blur: 16,
-                        enableHover: false,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 8,
-                        ),
-                        borderColor: AppColors.goldPrimary.withValues(
-                          alpha: isDark ? 0.55 : 0.45,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: 8,
-                              height: 8,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: const Color(0xFF10B981),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(0xFF10B981).withValues(
-                                      alpha: 0.7,
-                                    ),
-                                    blurRadius: 8,
-                                    spreadRadius: 1,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'AI & ML Developer',
-                              style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.3,
-                              color: isDark ? Colors.white : AppColors.textLight,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-
-                // 6. Floating Glass Badge: Bottom-Left "✦ MHSSCE • Mumbai"
-                Positioned(
-                  bottom: badgeBottomBottom,
-                  left: badgeBottomLeft,
-                  child: AnimatedSlide(
-                    offset: _isHovered ? const Offset(0, -0.06) : Offset.zero,
-                    duration: const Duration(milliseconds: 250),
-                    child: GlassBox(
-                      borderRadius: 20,
-                      blur: 16,
-                      enableHover: false,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 8,
-                      ),
-                      borderColor: AppColors.goldMuted.withValues(
-                        alpha: isDark ? 0.5 : 0.35,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.auto_awesome_rounded,
-                            size: 14,
-                            color: AppColors.goldPrimary,
-                          ),
-                          const SizedBox(width: 7),
-                          Text(
-                            'MHSSCE • Mumbai',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.2,
-                              color: isDark
-                                  ? const Color(0xFFE5B96E)
-                                  : AppColors.goldPrimary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    },
-  );
-}
+        );
+      },
+    );
+  }
 }
 
 /// Fallback widget in case asset fails to load

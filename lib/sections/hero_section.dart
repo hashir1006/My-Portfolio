@@ -187,9 +187,11 @@ class _HeroSectionState extends State<HeroSection>
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1140),
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: isDesktop ? 36 : 24,
-                  vertical: isDesktop ? 48 : 32,
+                padding: EdgeInsets.only(
+                  left: isDesktop ? 36 : 24,
+                  right: isDesktop ? 36 : 24,
+                  top: isDesktop ? 8 : 12,
+                  bottom: isDesktop ? 28 : 20,
                 ),
                 child: isDesktop
                     ? Row(
@@ -336,12 +338,12 @@ class _HeroSectionState extends State<HeroSection>
     final isDesktop = size.width >= 960;
 
     return GlassBox(
-      borderRadius: 28,
+      borderRadius: 26,
       blur: 24,
       enableHover: false,
       padding: EdgeInsets.symmetric(
-        horizontal: isDesktop ? 36 : 24,
-        vertical: isDesktop ? 36 : 26,
+        horizontal: isDesktop ? 30 : 20,
+        vertical: isDesktop ? 22 : 18,
       ),
       child: Column(
         crossAxisAlignment:
@@ -354,14 +356,14 @@ class _HeroSectionState extends State<HeroSection>
             color: AppColors.goldPrimary,
             showDivider: true,
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 10),
 
           // 2. Greeting: "Assalamualaikum, I'm"
           Text(
             PortfolioData.greeting,
             style: AppTypography.headingSerif(
               context: context,
-              fontSize: 26,
+              fontSize: isDesktop ? 22 : 20,
               fontWeight: FontWeight.w500,
               color: isDark ? const Color(0xFFF7F2E8) : AppColors.textLight,
             ).copyWith(
@@ -376,7 +378,7 @@ class _HeroSectionState extends State<HeroSection>
                   : null,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
 
           // 3. Main Heading: "Hashir" in dark charcoal, "Shaikh" in gold (Reference Image)
           RichText(
@@ -387,9 +389,9 @@ class _HeroSectionState extends State<HeroSection>
                   text: '${PortfolioData.name}\n',
                   style: AppTypography.headingSerif(
                     context: context,
-                    fontSize: isDesktop ? 62 : 46,
+                    fontSize: isDesktop ? 54 : 42,
                     fontWeight: FontWeight.w700,
-                    height: 1.05,
+                    height: 1.02,
                     letterSpacing: -1.0,
                     color: isDark ? Colors.white : AppColors.textLight,
                   ).copyWith(
@@ -408,9 +410,9 @@ class _HeroSectionState extends State<HeroSection>
                   text: PortfolioData.surname,
                   style: AppTypography.headingSerif(
                     context: context,
-                    fontSize: isDesktop ? 62 : 46,
+                    fontSize: isDesktop ? 54 : 42,
                     fontWeight: FontWeight.w700,
-                    height: 1.05,
+                    height: 1.02,
                     letterSpacing: -1.0,
                     color: isDark ? const Color(0xFFE5B96E) : AppColors.goldPrimary,
                   ).copyWith(
@@ -426,52 +428,123 @@ class _HeroSectionState extends State<HeroSection>
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
-          // 4. Professional Subtitle: Highlighted Badge
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-            decoration: BoxDecoration(
-              color: AppColors.goldPrimary.withValues(alpha: isDark ? 0.20 : 0.12),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: AppColors.goldPrimary.withValues(alpha: 0.45),
-                width: 1.1,
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 6,
-                  height: 6,
-                  decoration: const BoxDecoration(
-                    color: AppColors.goldPrimary,
-                    shape: BoxShape.circle,
+          // 4. Professional Status Badges (AI & ML Developer + MHSSCE Mumbai + CS B.E.)
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            alignment: centerOnMobile ? WrapAlignment.center : WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              // Badge 1: AI & ML Developer with pulsing emerald indicator
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF10B981).withValues(alpha: isDark ? 0.18 : 0.10),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: const Color(0xFF10B981).withValues(alpha: 0.5),
+                    width: 1.1,
                   ),
                 ),
-                const SizedBox(width: 8),
-                Flexible(
-                  child: Text(
-                    PortfolioData.heroTitle,
-                    textAlign: centerOnMobile ? TextAlign.center : TextAlign.start,
-                    style: AppTypography.labelSpaced(
-                      context: context,
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w700,
-                      color: isDark ? const Color(0xFFF7F2E8) : AppColors.navySecondary,
-                      letterSpacing: 2.2,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 7,
+                      height: 7,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: const Color(0xFF10B981),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF10B981).withValues(alpha: 0.8),
+                            blurRadius: 6,
+                            spreadRadius: 1,
+                          ),
+                        ],
+                      ),
                     ),
+                    const SizedBox(width: 7),
+                    Text(
+                      'AI & ML Developer',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.3,
+                        color: isDark ? Colors.white : AppColors.textLight,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Badge 2: MHSSCE • Mumbai
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                decoration: BoxDecoration(
+                  color: AppColors.goldPrimary.withValues(alpha: isDark ? 0.20 : 0.12),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: AppColors.goldPrimary.withValues(alpha: 0.45),
+                    width: 1.1,
                   ),
                 ),
-              ],
-            ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.auto_awesome_rounded,
+                      size: 13,
+                      color: AppColors.goldPrimary,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      'MHSSCE • Mumbai',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.2,
+                        color: isDark ? const Color(0xFFE5B96E) : AppColors.goldPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Badge 3: Computer Science & AI/ML
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.08)
+                      : Colors.black.withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isDark
+                        ? AppColors.goldMuted.withValues(alpha: 0.35)
+                        : AppColors.goldMuted.withValues(alpha: 0.4),
+                    width: 1.0,
+                  ),
+                ),
+                child: Text(
+                  'CS (AI & ML) B.E.',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.4,
+                    color: isDark ? const Color(0xFFF7F2E8) : AppColors.navySecondary,
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 14),
 
           // 5. Introduction Paragraphs with High Contrast & Soft Text Glow
           ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 500),
+            constraints: const BoxConstraints(maxWidth: 480),
             child: Column(
               crossAxisAlignment: centerOnMobile
                   ? CrossAxisAlignment.center
@@ -482,9 +555,9 @@ class _HeroSectionState extends State<HeroSection>
                   textAlign: centerOnMobile ? TextAlign.center : TextAlign.start,
                   style: AppTypography.bodySans(
                     context: context,
-                    fontSize: 15.5,
+                    fontSize: 14.5,
                     fontWeight: FontWeight.w500,
-                    height: 1.65,
+                    height: 1.55,
                     color: isDark ? const Color(0xFFF5EFE6) : const Color(0xFF222222),
                   ).copyWith(
                     shadows: isDark
@@ -498,15 +571,15 @@ class _HeroSectionState extends State<HeroSection>
                         : null,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 Text(
                   PortfolioData.heroBio2,
                   textAlign: centerOnMobile ? TextAlign.center : TextAlign.start,
                   style: AppTypography.bodySans(
                     context: context,
-                    fontSize: 15.5,
+                    fontSize: 14.5,
                     fontWeight: FontWeight.w500,
-                    height: 1.65,
+                    height: 1.55,
                     color: isDark ? const Color(0xFFE8E0D5) : const Color(0xFF333333),
                   ).copyWith(
                     shadows: isDark
@@ -523,12 +596,12 @@ class _HeroSectionState extends State<HeroSection>
               ],
             ),
           ),
-          const SizedBox(height: 28),
+          const SizedBox(height: 20),
 
           // 6. Action Buttons: "Download Resume ->" & "Know More v"
           Wrap(
-            spacing: 16,
-            runSpacing: 14,
+            spacing: 14,
+            runSpacing: 12,
             alignment: centerOnMobile ? WrapAlignment.center : WrapAlignment.start,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
@@ -547,7 +620,7 @@ class _HeroSectionState extends State<HeroSection>
               ),
             ],
           ),
-          const SizedBox(height: 28),
+          const SizedBox(height: 20),
 
           // 7. Circular Social Links: GitHub, LinkedIn, Instagram, Email
           Row(
